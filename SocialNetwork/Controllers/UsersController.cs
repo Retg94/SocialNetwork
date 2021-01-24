@@ -3,45 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SocialNetworkLibrary.Repositories.Posts;
+using SocialNetworkLibrary.Repositories.Users;
+using SocialNetworkLibrary.Models.Users;
+using SocialNetworkLibrary.Models.Posts;
+using SocialNetworkLibrary.Dtos.Users;
+using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SocialNetwork.Controllers
 {
-    [Route("api/[controller]")]
+    //Controller route api/users
+    [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        // GET: api/<UserController>
+        private readonly IPostRepository _todoRepository;
+        private readonly IUserRepository _userRepository;
+
+        public UsersController(IPostRepository todoRepository, IUserRepository userRepository)
+        {
+            _todoRepository = todoRepository;
+            _userRepository = userRepository;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("{id:int}")]
+        public ActionResult<User> GetUser(int id)
         {
-            return new string[] { "value1", "value2" };
+            var user = _userRepository.GetUser(id);
+            if (user is null)
+                return NotFound(user);
+            return user;
         }
-
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("adduser")]
+        public ActionResult<User> AddUser([FromQuery]UserDto userDto)
         {
+            try
+            {
+                var user = _userRepository.AddUser(userDto);
+                if (user is null)
+                    return NotFound(user);
+                return user;
+            }
+            catch (ValidationException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

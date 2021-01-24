@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SocialNetworkLibrary.Dtos.Posts
 {
-    class QueryPostDto
+    public class PostQueryDto
     {
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SocialNetworkLibrary.Dtos.Users
 {
-    class UserQueryDto
+    public class UserQueryDto
     {
     }
 }
