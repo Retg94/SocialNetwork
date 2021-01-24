@@ -4,7 +4,8 @@ using System.Text;
 
 namespace SocialNetworkLibrary.Repositories.Posts
 {
-    interface Interface1
+    public interface IPostRepository
     {
+
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SocialNetworkLibrary.Repositories.Posts
 {
-    class Class1
+    public class DictionaryPostRepository : IPostRepository
     {
     }
 }
