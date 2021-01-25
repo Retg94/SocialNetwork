@@ -37,9 +37,10 @@ namespace SocialNetwork.Controllers
                 return NotFound(user);
             return user;
         }
+
         [HttpPost]
         [Route("adduser")]
-        public ActionResult<User> AddUser([FromQuery]UserDto userDto)
+        public ActionResult<User> AddUser([FromQuery] UserDto userDto)
         {
             try
             {
@@ -52,6 +53,17 @@ namespace SocialNetwork.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public ActionResult RemoveUser(int id)
+        {
+            var user = _userRepository.GetUser(id);
+            if (user is null)
+                return NotFound($"No post with {id} found");
+            _userRepository.DeleteUser(id);
+            return NoContent();
         }
 
     }

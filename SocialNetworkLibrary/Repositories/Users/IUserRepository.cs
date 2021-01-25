@@ -9,6 +9,7 @@ namespace SocialNetworkLibrary.Repositories.Users
     public interface IUserRepository
     {
         User AddUser(UserDto user);
+        void DeleteUser(int userId);
         User GetUser(int id);
     }
 }

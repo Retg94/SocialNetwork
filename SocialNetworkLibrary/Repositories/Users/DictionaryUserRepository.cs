@@ -40,5 +40,9 @@ namespace SocialNetworkLibrary.Repositories.Users
             _users.Add(id, user);
             return user;
         }
+        public void DeleteUser(int userId)
+        {
+             _users.Remove(userId);      
+        }
     }
 }
