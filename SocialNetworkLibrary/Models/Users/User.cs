@@ -10,7 +10,7 @@ namespace SocialNetworkLibrary.Models.Users
         private const string _stringMessage = "{0} must be between {2} and {1} characters long";
         public User(int id, string username, string password, string emailadress)
         {
-            Id = id;
+            UserId = id;
             UserName = username;
             Password = password;
             EmailAdress = emailadress;
@@ -19,7 +19,7 @@ namespace SocialNetworkLibrary.Models.Users
         {
 
         }
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = _stringMessage, MinimumLength = 5)]
