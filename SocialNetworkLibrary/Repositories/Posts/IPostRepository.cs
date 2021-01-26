@@ -10,10 +10,10 @@ namespace SocialNetworkLibrary.Repositories.Posts
     public interface IPostRepository
     {
         Post AddPost(PostDto postDto);
-        void DeletePost(int postId);
+        void DeletePost(int postId, int userId);
         string GetAllPosts();
         Post GetPostById(int id);
         Post LikeOrUnlikePost(int postId, int userId);
-        Post UpdateContent(int postId, string content);
+        Post UpdateContent(int postId, string content, int userId);
     }
 }

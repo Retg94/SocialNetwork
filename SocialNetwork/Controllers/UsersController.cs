@@ -9,6 +9,7 @@ using SocialNetworkLibrary.Models.Users;
 using SocialNetworkLibrary.Models.Posts;
 using SocialNetworkLibrary.Dtos.Users;
 using System.ComponentModel.DataAnnotations;
+using SocialNetworkLibrary.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,16 +41,14 @@ namespace SocialNetwork.Controllers
 
         [HttpPost]
         [Route("adduser")]
-        public ActionResult<User> AddUser([FromQuery] UserDto userDto)
+        public ActionResult<User> AddUser([FromBody] UserDto userDto)
         {
             try
             {
-                var user = _userRepository.AddUser(userDto);
-                if (user is null)
-                    return NotFound(user);
+                User user = _userRepository.AddUser(userDto);
                 return user;
             }
-            catch (ValidationException e)
+            catch (UserException e)
             {
                 return BadRequest(e.Message);
             }

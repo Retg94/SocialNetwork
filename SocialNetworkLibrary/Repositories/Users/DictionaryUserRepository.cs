@@ -2,6 +2,7 @@
 using SocialNetworkLibrary.Models.Users;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SocialNetworkLibrary.Repositories.Users
@@ -14,14 +15,14 @@ namespace SocialNetworkLibrary.Repositories.Users
         {
             var user1 = new User
             {
-                Id = 1,
-                UserName = "Test",
+                UserId = 1,
+                UserName = "Testa",
                 Password = "BadPassword",
                 EmailAdress = "test@mail.com"
             };
             var user2 = new User
             {
-                Id = 2,
+                UserId = 2,
                 UserName = "FooBar",
                 Password = "EvenWorsePassword",
                 EmailAdress = "foobar@mail.com"
@@ -31,15 +32,56 @@ namespace SocialNetworkLibrary.Repositories.Users
         }
         public User GetUser(int id)
         {
-            return _users[id];
+            try
+            {
+                return _users[id];
+            }
+            catch(KeyNotFoundException)
+            {
+                throw new UserNotFound();
+            }
         }
+        public bool UserNameIsUnique(User user)
+        {
+            return _users.Any(e => String.Equals(e.Value.UserName, user.UserName, StringComparison.CurrentCultureIgnoreCase));
+        }
+        public int ValidateUniqueId(int id)
+        {
+            bool isOkay = false;
+            while(!isOkay)
+            {
+                isOkay = true;
+                if (_users.Any(e => e.Value.UserId == id))
+                {
+                    id += 1;
+                    isOkay = false;
+                }
+            }
+            return id;
+        }
+
         public User AddUser(UserDto userDto)
         {
             var id = _users.Count + 1;
+            id = ValidateUniqueId(id);
             var user = new User(id, userDto.UserName, userDto.Password, userDto.EmailAdress);
+            bool usernameOkay = UserValidation.ValidateUsername(userDto.UserName);
+            if(!usernameOkay)
+            {
+                throw new InvalidCharacters();
+            }
+            if (UserNameIsUnique(user))
+            {
+                throw new NonUniqueUserName();
+            }
+            if (_users.ContainsKey(user.UserId))
+            {
+                throw new NonUniqueId();
+            }
             _users.Add(id, user);
             return user;
         }
+
         public void DeleteUser(int userId)
         {
              _users.Remove(userId);      

@@ -49,6 +49,10 @@ namespace SocialNetwork.Controllers
         [Route("addpost")]
         public ActionResult<Post> AddPost([FromBody] PostDto postDto)
         {
+
+            var user = _userRepository.GetUser(postDto.UserId);
+            if (user is null)
+                return NotFound(user);
             var post = _postRepository.AddPost(postDto);
             if (post is null)
                 return NotFound(post);
@@ -59,27 +63,31 @@ namespace SocialNetwork.Controllers
         [Route("{postId:int}/likeorunlike")]
         public ActionResult LikeOrUnlike (int postId, [FromQuery] int userId)
         {
+
             Post post = _postRepository.LikeOrUnlikePost(postId, userId);
             return NoContent();
         }
 
         [HttpPatch]
         [Route("{postId:int}/updatecontent")]
-        public ActionResult UpdateContent(int postId, [FromQuery] string newContent )
+        public ActionResult UpdateContent(int postId, [FromQuery] string newContent, int userId )
         {
-            var post = _postRepository.UpdateContent(postId, newContent);
-            
+            var post = _postRepository.UpdateContent(postId, newContent, userId);
+            if (post is null)
+                return NotFound($"No post with {postId} found");
+
             return NoContent();
         }
 
         [HttpDelete]
         [Route("{postId:int}")]
-        public ActionResult DeletePost(int postId)
+        public ActionResult DeletePost(int postId, [FromQuery] int userId)
         {
             var post = _postRepository.GetPostById(postId);
             if (post is null)
                 return NotFound($"No post with {postId} found");
-            _postRepository.DeletePost(postId);
+
+            _postRepository.DeletePost(postId, userId);
             return NoContent();
         }
 
