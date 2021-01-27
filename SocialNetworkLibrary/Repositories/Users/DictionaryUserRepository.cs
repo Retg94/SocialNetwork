@@ -9,7 +9,7 @@ namespace SocialNetworkLibrary.Repositories.Users
 {
     public class DictionaryUserRepository : IUserRepository
     {
-        private Dictionary<int, User> _users = new Dictionary<int, User>();
+        public Dictionary<int, User> _users = new Dictionary<int, User>();
 
         public DictionaryUserRepository()
         {
@@ -88,7 +88,12 @@ namespace SocialNetworkLibrary.Repositories.Users
 
         public List<User> GetAllUsers()
         {
-            throw new NotImplementedException();
+            var users = new List<User>();
+            foreach(var user in _users)
+            {
+                users.Add(user.Value);
+            }
+            return users;
         }
     }
 }
