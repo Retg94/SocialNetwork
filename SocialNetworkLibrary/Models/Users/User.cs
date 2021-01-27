@@ -19,17 +19,31 @@ namespace SocialNetworkLibrary.Models.Users
         {
 
         }
+
+        /// <summary>
+        /// The id of the user
+        /// </summary>
         public int UserId { get; set; }
 
+        /// <summary>
+        /// UserName of the user. Can only contain between 5 and 100 characters and can only contain alphanumeric characters.
+        /// </summary>
         [Required]
         [StringLength(100, ErrorMessage = _stringMessage, MinimumLength = 5)]
         public string UserName { get; set; }
 
+        /// <summary>
+        /// Password for the user. Can only contain between 5 and 100 characters
+        /// </summary>
         [Required]
         [StringLength(100, ErrorMessage = _stringMessage, MinimumLength = 5)]
         public string Password { get; set; }
 
+        /// <summary>
+        /// The users emailadress. Can only contain between 5 and 100 characters
+        /// </summary>
         [Required]
+        [StringLength(100, ErrorMessage = _stringMessage, MinimumLength = 5)]
         [EmailAddress]
         public string EmailAdress { get; set; }
 

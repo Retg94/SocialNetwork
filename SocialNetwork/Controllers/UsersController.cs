@@ -29,25 +29,65 @@ namespace SocialNetwork.Controllers
             _userRepository = userRepository;
         }
 
+        /// <summary>
+        /// Returns all users
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">If the users are succesfully found</response>
+        /// <response code="400">If invalid properties</response>
         [HttpGet]
         public ActionResult<List<User>> GetAllUsers()
         {
-            var users = _userRepository.GetAllUsers();
-            if (users is null)
-                return NotFound(users);
-            return users;
+            try
+            {
+                var users = _userRepository.GetAllUsers();
+                return users;
+            }
+            catch(UserException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
+        /// <summary>
+        /// Returns a specific user with a id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>The user with the id</returns>
+        /// <response code="200">If the user was successfully found</response>
+        /// <response code="400">If invalid properties</response>
         [HttpGet]
         [Route("{id:int}")]
         public ActionResult<User> GetUser(int id)
         {
-            var user = _userRepository.GetUser(id);
-            if (user is null)
-                return NotFound(user);
-            return user;
+            try
+            {
+                var user = _userRepository.GetUser(id);
+                return user;
+            }
+            catch(UserException e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
+        /// <summary>
+        /// Adds a new user with properties (string UserName, string Password, string EmailAdress)
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /api/users/adduser
+        ///     {
+        ///             "UserName": "ExampleUserName",
+        ///             "Password": "ExamplePassword",
+        ///             "EmailAdress": "Example@EmailAdress"
+        ///     }
+        /// </remarks>
+        /// <param name="userDto"></param>
+        /// <response code="204">If the user is succesfully created</response>
+        /// <response code="400">If the user contains invalid property</response>
         [HttpPost]
         [Route("adduser")]
         public ActionResult<User> AddUser([FromBody] UserDto userDto)
@@ -63,16 +103,27 @@ namespace SocialNetwork.Controllers
             }
         }
 
+        /// <summary>
+        /// Removes a specific user with id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>The user with the id</returns>
+        /// <response code="204">If the user was sucessfully removed</response>
+        /// <response code="400">If invalid properties</response>
         [HttpDelete]
         [Route("{id:int}")]
         public ActionResult RemoveUser(int id)
         {
-            var user = _userRepository.GetUser(id);
-            if (user is null)
-                return NotFound($"No post with {id} found");
-            _userRepository.DeleteUser(id);
-            return NoContent();
-        }
+            try
+            {
+                _userRepository.DeleteUser(id);
+                return NoContent();
+            }
+            catch(UserException e)
+            {
+                return BadRequest(e.Message);
+            }
 
+        }
     }
 }

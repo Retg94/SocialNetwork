@@ -6,17 +6,18 @@ using SocialNetworkLibrary.Repositories.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static SocialNetworkLibrary.Repositories.Posts.PostExceptions;
+using static SocialNetworkLibrary.Repositories.Posts.PostException;
 
 namespace SocialNetworkLibrary.Repositories.Posts
 {
     public class DictionaryPostRepository : IPostRepository
     {
-        private readonly IUserRepository _userRepository = new DictionaryUserRepository();
+        private readonly IUserRepository _userRepository;
         private readonly Dictionary<int, Post> _posts = new Dictionary<int, Post>();
 
         public DictionaryPostRepository(IUserRepository dictionaryUserRepository)
         {
+            _userRepository = dictionaryUserRepository;
             var user1 = dictionaryUserRepository.GetUser(1);
             var post1 = new Post(1)
             {
@@ -39,12 +40,6 @@ namespace SocialNetworkLibrary.Repositories.Posts
 
         public List<Post> GetAllPosts()
         {
-            /*string posts = string.Empty;
-            foreach(var post in _posts)
-            {
-                posts += JsonConvert.SerializeObject(post.Value, Formatting.Indented);
-            }
-            return posts;*/
             var posts = new List<Post>();
             foreach(var post in _posts)
             {

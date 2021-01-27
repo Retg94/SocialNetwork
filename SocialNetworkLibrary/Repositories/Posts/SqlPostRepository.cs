@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using static SocialNetworkLibrary.Repositories.Posts.PostExceptions;
+using static SocialNetworkLibrary.Repositories.Posts.PostException;
 
 
 namespace SocialNetworkLibrary.Repositories.Posts
