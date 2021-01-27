@@ -11,16 +11,26 @@ namespace SocialNetworkLibrary.Models.Posts
     public class Post
     {
         private const string _stringMessage = "{0} must be between {2} and {1} characters long";
+        public Post()
+        {
+            //CreatedDate = DateTime.Now;
+        }
         public Post(int id)
         {
             PostId = id;
-            CreatedDate = DateTime.Now;
+            //CreatedDate = DateTime.Now;
         }
-        public Post(int id, PostDto postDto, IUserRepository _userRepository)
+        public Post(PostDto postDto)
+        {
+            Content = postDto.Content;
+            //CreatedDate = DateTime.Now;
+            UserId = postDto.UserId;
+        }
+        public Post(int id, PostDto postDto)
         {
             PostId = id;
             Content = postDto.Content;
-            CreatedDate = DateTime.Now;
+            //CreatedDate = DateTime.Now;
             UserId = postDto.UserId;
         }
         public int PostId { get; set; }
@@ -29,7 +39,7 @@ namespace SocialNetworkLibrary.Models.Posts
         [StringLength(400, ErrorMessage = _stringMessage, MinimumLength = 5)]
         public string Content { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime LastDate { get; set; }
+        public DateTime? LastDate { get; set; } = null;
 
         [Required]
         public int UserId { get; set; }

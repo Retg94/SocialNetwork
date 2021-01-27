@@ -37,21 +37,26 @@ namespace SocialNetworkLibrary.Repositories.Posts
             return _posts[id];
         }
 
-        public string GetAllPosts()
+        public List<Post> GetAllPosts()
         {
-            string posts = string.Empty;
+            /*string posts = string.Empty;
             foreach(var post in _posts)
             {
                 posts += JsonConvert.SerializeObject(post.Value, Formatting.Indented);
             }
+            return posts;*/
+            var posts = new List<Post>();
+            foreach(var post in _posts)
+            {
+                posts.Add(post.Value);
+            }
             return posts;
         }
-        public Post AddPost(PostDto postDto)
+        public void AddPost(PostDto postDto)
         {
             var id = _posts.Count + 1;
-            var post = new Post(id, postDto, _userRepository);
+            var post = new Post(id, postDto);
             _posts.Add(id, post);
-            return post;
         }
         public Post LikeOrUnlikePost(int postId, int userId)
         {
@@ -67,14 +72,14 @@ namespace SocialNetworkLibrary.Repositories.Posts
             }
             return post;
         }
-        public Post UpdateContent(int postId, string newContent, int userId)
+        public Post UpdateContent(int postId, PostDto postDto)
         {
-            if (!CorrectUser(postId, userId))
+            if (!CorrectUser(postId, postDto.UserId))
             {
                 throw new NotCorrectUser();
             }
             var post = GetPostById(postId);
-            post.Content = newContent;
+            post.Content = postDto.Content;
             post.LastDate = DateTime.Now;
             return post;
         }
