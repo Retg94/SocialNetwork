@@ -9,11 +9,11 @@ namespace SocialNetworkLibrary.Repositories.Posts
 {
     public interface IPostRepository
     {
-        Post AddPost(PostDto postDto);
+        void AddPost(PostDto postDto);
         void DeletePost(int postId, int userId);
-        string GetAllPosts();
+        List<Post> GetAllPosts();
         Post GetPostById(int id);
         Post LikeOrUnlikePost(int postId, int userId);
-        Post UpdateContent(int postId, string content, int userId);
+        Post UpdateContent(int postId, PostDto postDto);
     }
 }

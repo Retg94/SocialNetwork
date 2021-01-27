@@ -30,6 +30,15 @@ namespace SocialNetwork.Controllers
         }
 
         [HttpGet]
+        public ActionResult<List<User>> GetAllUsers()
+        {
+            var users = _userRepository.GetAllUsers();
+            if (users is null)
+                return NotFound(users);
+            return users;
+        }
+
+        [HttpGet]
         [Route("{id:int}")]
         public ActionResult<User> GetUser(int id)
         {
@@ -45,8 +54,8 @@ namespace SocialNetwork.Controllers
         {
             try
             {
-                User user = _userRepository.AddUser(userDto);
-                return user;
+                _userRepository.AddUser(userDto);
+                return NoContent();
             }
             catch (UserException e)
             {

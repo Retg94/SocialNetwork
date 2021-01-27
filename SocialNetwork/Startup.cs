@@ -29,8 +29,8 @@ namespace SocialNetwork
         {
             services.AddControllers().AddNewtonsoftJson();
 
-            services.AddSingleton<IUserRepository, DictionaryUserRepository>();
-            services.AddSingleton<IPostRepository, DictionaryPostRepository>();
+            services.AddSingleton<IUserRepository, SqlUserRepository>();
+            services.AddSingleton<IPostRepository, SqlPostRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

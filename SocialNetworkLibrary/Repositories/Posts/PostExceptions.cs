@@ -25,6 +25,12 @@ namespace SocialNetworkLibrary.Repositories.Posts
             {
             }
         }
+        public class PostNotFound : PostException
+        {
+            public PostNotFound(string message = "Could not find the post") : base(message)
+            {
+            }
+        }
 
 
     }

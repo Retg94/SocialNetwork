@@ -36,7 +36,7 @@ namespace SocialNetwork.Controllers
         }
 
         [HttpGet]
-        public ActionResult<string> GetAllPosts()
+        public ActionResult<List<Post>> GetAllPosts()
         {
             var posts = _postRepository.GetAllPosts();
             if (posts is null)
@@ -53,10 +53,9 @@ namespace SocialNetwork.Controllers
             var user = _userRepository.GetUser(postDto.UserId);
             if (user is null)
                 return NotFound(user);
-            var post = _postRepository.AddPost(postDto);
-            if (post is null)
-                return NotFound(post);
-            return post;
+            _postRepository.AddPost(postDto);
+            return NoContent();
+
         }
 
         [HttpPatch]
@@ -70,9 +69,9 @@ namespace SocialNetwork.Controllers
 
         [HttpPatch]
         [Route("{postId:int}/updatecontent")]
-        public ActionResult UpdateContent(int postId, [FromQuery] string newContent, int userId )
+        public ActionResult UpdateContent(int postId, [FromQuery] PostDto postDto )
         {
-            var post = _postRepository.UpdateContent(postId, newContent, userId);
+            var post = _postRepository.UpdateContent(postId, postDto);
             if (post is null)
                 return NotFound($"No post with {postId} found");
 

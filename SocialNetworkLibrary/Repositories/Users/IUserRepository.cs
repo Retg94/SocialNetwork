@@ -8,9 +8,10 @@ namespace SocialNetworkLibrary.Repositories.Users
 {
     public interface IUserRepository
     {
-        User AddUser(UserDto user);
+        void AddUser(UserDto user);
         void DeleteUser(int userId);
+        List<User> GetAllUsers();
         User GetUser(int id);
-        bool UserNameIsUnique(User user);
+        bool UserNameIsUnique(string username);
     }
 }
